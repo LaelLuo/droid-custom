@@ -1,0 +1,37 @@
+id: prefer-system-rg
+language: javascript
+rule:
+  all:
+    - pattern: |
+        $RESOLVER = $WRAPPER.default(() => {
+          let $BIN = $JOIN;
+          try {
+            return $EXEC($COMMAND, $OPTIONS), $BIN;
+          } catch ($ERR) {
+            $LOGGER("Failed to resolve ripgrep", { cause: $CAUSE, path: $PATH });
+            return;
+          }
+        });
+    - not:
+        has:
+          pattern: const candidates = ["rg", fallbackBinary]
+fix: |
+  $RESOLVER = $WRAPPER.default(() => {
+  	const fallbackBinary = $JOIN;
+  	const candidates = ["rg", fallbackBinary];
+  	for (const candidate of candidates) {
+  		try {
+  			const formatted = candidate.includes(" ") ? `"${candidate}"` : candidate;
+  			$EXEC(`${formatted} --version`, $OPTIONS);
+  			return candidate;
+  		} catch (error) {
+  			if (candidate === fallbackBinary) {
+  				$LOGGER("Failed to resolve ripgrep", {
+  					cause: error,
+  					path: fallbackBinary,
+  				});
+  			}
+  		}
+  	}
+  	return;
+  });

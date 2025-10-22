@@ -1,0 +1,16 @@
+{
+  "name": "droid-custom",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "update": "bun scripts/update-from-factory.ts",
+    "apply-rules": "bun scripts/apply-rules.ts",
+    "extract": "bun scripts/extract-standalone.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

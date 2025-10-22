@@ -1,0 +1,31 @@
+id: enable-skip-ca-bootstrap
+language: javascript
+rule:
+  all:
+    - pattern: |
+        async function $FUNC() {
+          try {
+            $$$TRY
+          } catch ($ERR) {
+            $$$CATCH
+          }
+        }
+    - not:
+        has:
+          pattern: process.env.DROID_SKIP_CA_BOOTSTRAP
+fix: |
+  async function $FUNC() {
+  	const rawFlag = process.env.DROID_SKIP_CA_BOOTSTRAP;
+  	const flagValue = typeof rawFlag === "string" ? rawFlag.trim() : "";
+  	if (flagValue === "") {
+  		process.env.DROID_SKIP_CA_BOOTSTRAP = "1";
+  		return;
+  	}
+  	const normalizedFlag = flagValue.toLowerCase();
+  	if (normalizedFlag !== "0" && normalizedFlag !== "false") return;
+  	try {
+  		$$$TRY
+  	} catch ($ERR) {
+  		$$$CATCH
+  	}
+  }
