@@ -32,3 +32,11 @@
 - 修改规则后建议运行 `bun run apply-rules` 并对比 `artifacts/droid.generated.js` 与 `artifacts/droid.js`
 - 若需要测试，可在 `tests/` 下补充 Bun 测试用例，然后执行 `bun test`
 - 在提交前请运行 Biome 格式化及相关脚本，确保生成文件符合预期
+
+## 绕过登陆
+创建`~/.factory/auth.json`，内容如下
+```json
+{
+  "access_token": "eyJhbGciOiJub25lIn0.eyJzdWIiOiAib2ZmbGluZS11c2VyIiwgImVtYWlsIjogIm9mZmxpbmVAbG9jYWwiLCAiZXh0ZXJuYWxfb3JnX2lkIjogIm9mZmxpbmUtb3JnIiwgImV4cCI6IDQxMDI0NDQ4MDB9."
+}
+```
